@@ -1,16 +1,16 @@
 public class GameOptions {
 
     private final int N;
-    private final boolean isFirstPlayerUser;
-    private final boolean isSecondPlayerUser;
+    private final String firstPlayerType;
+    private final String secondPlayerType;
     private final char firstPlayerColor;
     private final char secondPlayerColor;
 
     public GameOptions(String[] args) {
         N = Integer.parseInt(args[1].replace(",", ""));
-        isFirstPlayerUser = args[2].equals("user");
+        firstPlayerType = args[2];
         firstPlayerColor = args[3].charAt(0);
-        isSecondPlayerUser = args[4].equals("user");
+        secondPlayerType = args[4];
         secondPlayerColor = args[5].charAt(0);
         isNMoreThan2();
         isTypePermit(args[2], args[4]);
@@ -25,6 +25,16 @@ public class GameOptions {
     public char getFirstPlayerColor() {
         return firstPlayerColor;
     }
+    public char getSecondPlayerColor() {
+        return secondPlayerColor;
+    }
+    public String getFirstPlayerType() {
+        return firstPlayerType;
+    }
+    public String getSecondPlayerType() {
+        return secondPlayerType;
+    }
+
     void isTypePermit(String type1, String type2) {
         if (!(type1.equals("user") || type1.equals("comp")) ||
                 !(type2.equals("user") || type2.equals("comp"))) {
