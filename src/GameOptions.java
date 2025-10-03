@@ -9,9 +9,9 @@ public class GameOptions {
     public GameOptions(String[] args) {
         N = Integer.parseInt(args[1].replace(",", ""));
         firstPlayerType = args[2];
-        firstPlayerColor = args[3].charAt(0);
+        firstPlayerColor = Character.toUpperCase(args[3].charAt(0)) ;
         secondPlayerType = args[4];
-        secondPlayerColor = args[5].charAt(0);
+        secondPlayerColor = Character.toUpperCase(args[5].charAt(0));
         isNMoreThan2();
         isTypePermit(args[2], args[4]);
         isColorPermit(firstPlayerColor, true);
@@ -45,8 +45,7 @@ public class GameOptions {
         if (N < 2) throw new IllegalArgumentException("N должно быть больше 2-х");
     }
     void isColorPermit(char color, boolean isFirstPlayer) {
-        if (Character.toUpperCase(color) != 'W' &&
-                Character.toUpperCase(color) != 'B' ) {
+        if (color != 'W' && color != 'B' ) {
             String player = isFirstPlayer ? "первого" : "второго";
             throw new RuntimeException("Недопустимый цвет для шашек " + player + " игрока");
         }

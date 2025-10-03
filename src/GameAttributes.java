@@ -7,6 +7,8 @@ public class GameAttributes {
     private final char[][] matrix;
     private int count;
 
+    public void exitGame() {
+        count = N*N+1;}
     public GameAttributes(int N) {
         matrix = new char[N][N];
         this.N = N;

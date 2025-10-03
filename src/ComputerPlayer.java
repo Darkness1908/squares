@@ -6,7 +6,7 @@ public class ComputerPlayer extends Player {
     private final Random RANDOM;
 
     public ComputerPlayer(char color, String order) {
-        super(color, order, "computer");
+        super(color, order);
         RANDOM = new Random();
     }
 
@@ -14,7 +14,7 @@ public class ComputerPlayer extends Player {
     public void makeMove(GameAttributes ga) {
         System.out.println(playerOrder + " игрок делает ход");
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1500);
         }
         catch (InterruptedException e) {
             throw new RuntimeException("Возникло прерывание потока");
@@ -26,7 +26,6 @@ public class ComputerPlayer extends Player {
         for (int i = 0; i < randomIndex; i++) {
             it.next();
         }
-
         Pair move = it.next();
         it.remove();
 

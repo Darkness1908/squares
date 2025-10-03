@@ -3,15 +3,13 @@ import java.util.Set;
 
 abstract public class Player {
     protected String playerOrder;
-    String playerType;
     protected char playerColor;
     protected int currentX;
     protected int currentY;
     Set<Pair> checkers;
 
-    public Player(char playerColor, String order, String playerType) {
+    public Player(char playerColor, String order) {
         this.playerColor = playerColor;
-        this.playerType = playerType;
         playerOrder = order;
         checkers = new HashSet<>();
     }

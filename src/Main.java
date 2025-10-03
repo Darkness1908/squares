@@ -1,66 +1,45 @@
+import java.util.Scanner;
 
 public class Main {
+    @SuppressWarnings("InfiniteLoopStatement")
     public static void main(String[] args) {
-        if (!args[0].equals("GAME")) {
-            switch (args[0]) {
-                case "MOVE" -> throw new RuntimeException("Чтобы сделать ход, сначала начините игру");
-                case "EXIT" -> throw new RuntimeException("Вы не можете завершить еще не начавшуюся игру");
-//                case "HELP" ->
-                default -> throw new RuntimeException("Запуск программы должен начинаться с команды 'GAME'");
+        Scanner sc = new Scanner(System.in);
+        String input;
+        while (true) {
+            isValidCommand(args[0]);
+            if (args[0].equals("GAME")) checkParametersNumber(6, args.length);
+            else {
+                input = sc.nextLine();
+                args = input.split(" ");
+                continue;
             }
-        }
-        checkParametersNumber(6, args.length);
-        GameOptions gameOptions = new GameOptions(args);
-        startGame(gameOptions);
-    }
+            GameOptions gameOptions = new GameOptions(args);
+            GameEngine.startGame(gameOptions);
 
-    public static void startGame(GameOptions go) {
-        System.out.println("Новая игра началась");
-
-        GameAttributes ga = new GameAttributes(go.getN());
-
-        Player firstPlayer = PlayerFactory.create(go.getFirstPlayerType(),
-                go.getFirstPlayerColor(), "Первый");
-        Player secondPlayer = PlayerFactory.create(go.getSecondPlayerType(),
-                go.getSecondPlayerColor(), "Второй");
-        Player currentPlayer = firstPlayer;
-
-        while (ga.getCount() < 6) {
-            currentPlayer.makeMove(ga);
-            currentPlayer = currentPlayer  == firstPlayer  ? secondPlayer : firstPlayer;
-        }
-
-        while (ga.getCount() < ga.getN()*ga.getN()) {
-            currentPlayer.makeMove(ga);
-            rotateAndCheckGameStatus(currentPlayer);
-            currentPlayer = currentPlayer  == firstPlayer  ? secondPlayer : firstPlayer;
-        }
-        System.out.println("Игра окончена. Ничья");
-    }
-
-    public static void rotateAndCheckGameStatus(Player player) {
-        for (Player.Pair p : player.getCheckers()) {
-            float dX = (float) (player.getCurrentX() - p.x) / 2;
-            float dY = (float) (player.getCurrentY() - p.y) / 2;
-            float cX = (float) (player.getCurrentX() + p.x) / 2;
-            float cY = (float) (player.getCurrentY() + p.y) / 2;
-            if ((dX*dX*4 + dY*dY*4) % 2 == 0) {
-                if (player.getCheckers().contains(
-                        new Player.Pair((int) (cX+(-1)*dY), (int) (cY+dX)))) {
-                    if (player.getCheckers().contains(
-                            new Player.Pair((int) (cX+dY), (int) (cY+(-1)*dX)))) {
-                        System.out.println("Игра окончена. Игрок " + player.getPlayerColor()
-                                + " одержал победу");
-                        System.exit(0);
-                    }
-                }
-            }
+            input = sc.nextLine();
+            args = input.split(" ");
         }
     }
 
     public static void checkParametersNumber(int lenReq, int lenProv) {
         if (lenReq != lenProv) {
-            throw new RuntimeException("Параметров должно быть ровно " + lenReq);
+            throw new IllegalArgumentException("Параметров должно быть ровно " + lenReq);
+        }
+    }
+    public static void printCommands() {
+        System.out.println("Описание команд");
+        System.out.println("GAME - начать новую игру");
+        System.out.println("EXIT - завершить работу программы");
+        System.out.println("MOVE - совершить ход");
+    }
+    public static void isValidCommand(String cmd) {
+        if (!cmd.equals("GAME")) {
+            switch (cmd) {
+                case "MOVE" -> throw new IllegalArgumentException("Чтобы сделать ход, сначала начните игру");
+                case "EXIT" -> System.exit(0);
+                case "HELP" -> printCommands();
+                default -> throw new IllegalArgumentException("Команда не определена");
+            }
         }
     }
 }
